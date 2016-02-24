@@ -1,0 +1,55 @@
+<div class="main-container"
+	layout="column"
+	layout-align="start center">
+	<div class="top-bar"
+		layout="row"
+		layout-align="space-around center">
+		<md-input-container class="md-block room-addr">
+			<label>输入直播间地址</label>
+			<input ng-model="roomAddr">
+		</md-input-container>
+		<md-button class="md-raised md-primary"
+			ng-click="getRoomInfo()">获取弹幕</md-button>
+	</div>
+	<div class="room-info" 
+		ng-if="isRoomInfoReady"
+		layout="row"
+		layout-align="space-around center">
+		<div>{{roomInfo.roomName}}</div>
+		<div>{{roomInfo.anchor}}</div>
+	</div>
+	<div class="chat-room" id="chat-room-id">
+		<div class="msg-item"
+			ng-repeat="item in messages track by $index"
+			ng-if="item.type!=='unknown'">
+			<div class="chat-msg"
+				ng-if="item.type==='msg'">
+				<span class="chat-user">{{ item.userName }}</span>
+				<span class="msg-content">: {{ item.content }}</span>
+			</div>
+			<div class="chat-gift"
+				ng-if="item.type==='gift'">
+				<span class="gift-user">{{ item.userName }}</span>
+				<span>赠送: </span>
+				<span class="gift-name">{{ item.giftName }}</span>
+				<span> x </span>
+				<span class="gift-count">{{ item.hits }}</span>
+			</div>
+			<div class="chat-user-enter"
+				ng-if="item.type==='userEnter'">
+				<span>欢迎 </span>
+				<span class="enter-user">{{ item.userName }}</span>
+				<span> 进入直播间</span>
+			</div>
+			<div class="chat-black-list"
+				ng-if="item.type==='blackList'">
+				<span class="black-list-user"> {{ item.userName }}</span>
+				<span> 被管理员 </span>
+				<span class="manager-name"> {{ item.managerName }} </span>
+				<span> 禁言 </span>
+				<span class="ban-time"> {{ item.time }} </span>
+				<span> 小时</span>
+			</div>
+		</div>
+	</div>
+</div>

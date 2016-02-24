@@ -1,0 +1,78 @@
+
+.main-container {
+	width: 100vw;
+	min-height: 100vh;
+	background-color: $grey-800;
+}
+
+.top-bar {
+	width: 100vw;
+	height: $top-bar-height;
+	border-bottom: 2px solid $red-900;
+	background-color: $grey-400;
+
+	.room-addr {
+		min-width: 70vw;
+		margin-bottom: -10px;
+		margin-top: 25px;
+	}
+}
+
+.room-info {
+	width: 100vw;
+	height: $room-info-height;
+	background-color: $grey-900;
+	border-bottom: 2px solid $red-900;
+	color: $grey-300;
+}
+
+.chat-room {
+	background-color: $grey-800;
+	width: 100vw;
+	height: $chat-room-height;
+	overflow: scroll;
+
+	.msg-item {
+		padding: 0 15px;
+		line-height: 20px;
+		font-size: 16px;
+		color: $grey-400;
+
+		.chat-msg {
+			.chat-user {
+				color: $red-500;
+			}
+		}
+
+		.chat-gift {
+			.gift-user {
+				color: $blue-500;
+			}
+			.gift-name {
+				color: $light-green-a400;
+			}
+			.gift-count {
+				color: $red-500;
+			}
+		}
+		.chat-user-enter {
+			color: $yellow-a200;
+			.enter-user {
+				color: $light-green-a400;
+			}
+		}
+		.chat-black-list {
+			background-color: black;
+			.black-list-user {
+				color: white;
+				font-weight: bold;
+			}
+			.manager-name {
+				color: $light-green-500;
+			}
+			.ban-time {
+				color: $yellow-a200;
+			}
+		}
+	}
+}
