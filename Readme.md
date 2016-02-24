@@ -1,6 +1,7 @@
-# ElectronAngular
+# Douyu Chatroom Electron Cross-platform App
+## 斗鱼弹幕助手[Electron版]
 
-This sample application demonstrate how to create a desktop application using Angular JS and Github Electron.
+This application is built with Angular JS and Github Electron.
 
 
 
@@ -11,27 +12,19 @@ Install dependencies.
 
 ```
 	npm install
-```
 
-Install bower dependencies 
-
-```
 	bower install
-```
-
-Install Application dependencies:
-
-Change directory to ```app``` folder, then run
-
-```
-npm install
 ```
 
 
 #Run 
 ---
+Run dev application
+```
+	gulp dev
+```
 
-Run your application by entering following command in your command prompt
+Run built application by entering following command
 
 ```
 	gulp run
@@ -40,7 +33,7 @@ Run your application by entering following command in your command prompt
 #Release
 ---
 
-You can get the release version with following command:
+Get the release version with following command:
 
 ```
 gulp build-electron
