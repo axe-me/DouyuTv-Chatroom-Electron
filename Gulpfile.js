@@ -68,11 +68,11 @@ gulp.task('build', ['sass', 'copy'], function () {
 });
 
 
-gulp.task('run-src', ['sass'], function () {
+gulp.task('dev', ['sass'], function () {
     childProcess.spawn(electron, ['./app'], { stdio: 'inherit' });
 });
 
-gulp.task('run-build', ['build'], function () {
+gulp.task('run', ['build'], function () {
     childProcess.spawn(electron, ['./build'], { stdio: 'inherit' });
 });
 
