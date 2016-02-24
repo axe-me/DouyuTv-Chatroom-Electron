@@ -9,10 +9,10 @@
 			<input ng-model="roomAddr">
 		</md-input-container>
 		<md-button class="md-raised md-primary"
-			ng-click="getRoomInfo()">获取弹幕</md-button>
+			ng-click="startGetMsg()">获取弹幕</md-button>
 	</div>
 	<div class="room-info" 
-		ng-if="isRoomInfoReady"
+		ng-if="roomInfoStatus.isReady"
 		layout="row"
 		layout-align="space-around center">
 		<div>{{roomInfo.roomName}}</div>
