@@ -12,8 +12,9 @@ var minifyCss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var os = require('os');
-var release_windows = require('./buil.windows');
+var packager = require('electron-packager')
 
+//var release_windows = require('./buil.windows');
 
 var projectDir = jetpack;
 var plugins = gulpLoadPlugins();
@@ -76,16 +77,17 @@ gulp.task('run', ['build'], function () {
     childProcess.spawn(electron, ['./build'], { stdio: 'inherit' });
 });
 
-gulp.task('build-electron', function () {
-    switch (os.platform()) {
-        case 'darwin':
-            // execute build.osx.js 
-            break;
-        case 'linux':
-            //execute build.linux.js
-            break;
-        case 'win32':
-        console.log('sdf')
-            return release_windows.build();
-    }
+gulp.task('dist',['build'], function () {
+    
+    // switch (os.platform()) {
+    //     case 'darwin':
+    //         // execute build.osx.js 
+    //         break;
+    //     case 'linux':
+    //         //execute build.linux.js
+    //         break;
+    //     case 'win32':
+    //     console.log('sdf')
+    //         return release_windows.build();
+    // }
 });

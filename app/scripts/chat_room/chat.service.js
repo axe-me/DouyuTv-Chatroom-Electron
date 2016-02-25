@@ -3,14 +3,14 @@
 
   var http = require('http');
   var net = require('net');
-  var uuid = require('node-uuid');
-  var md5 = require('md5');
 
   angular.module('app')
     .factory('chatService', chatService);
 
   function chatService(
     util,
+    uuid,
+    md5,
     $http,
     $interval,
     $rootScope
@@ -68,7 +68,7 @@
       var baseURL = "http://capi.douyucdn.cn/api/v1/room/" + roomID;
       var urlMid = "?aid=android&client_sys=android&time=";
       var time = Math.ceil(Date.now()/1000);
-      var auth = md5("room/"+roomID+urlMid+time+"1231");
+      var auth = md5.createHash("room/"+roomID+urlMid+time+"1231");
       var requestURL = baseURL + urlMid + time + "&auth=" + auth
 
       $http.get(requestURL)
@@ -136,7 +136,7 @@
           var time = Math.floor(Date.now() / 1000);
           var magicString = '7oE9nPEG9xXV69phU31FYCLUagKeYtsF';
           var devID = uuid.v4().replace(/-/g, '');
-          var vk = md5(time+magicString+devID);
+          var vk = md5.createHash(time+magicString+devID);
           var dataInit = "type@=loginreq/username@=/ct@=0/password@=/roomid@="+
                       roomID+
                       "/devid@="+devID+

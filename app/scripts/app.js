@@ -7,7 +7,9 @@
     angular.module('app', [
         'ui.router',
         'ngMaterial',
-        'ngAnimate'
+        'ngAnimate',
+        'angular-uuid',
+        'angular-md5'
     ])
 
 })();
