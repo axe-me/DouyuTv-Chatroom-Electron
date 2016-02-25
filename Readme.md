@@ -39,4 +39,14 @@ Get the release version with following command:
 gulp build-electron
 ```
 
+#TODO
+---
+
+*禁止滚动
+*屏蔽礼物
+*关键字roll观众
+*发言
+*自动回复
+* and more !
+
 
