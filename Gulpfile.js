@@ -14,7 +14,6 @@ var gulpLoadPlugins = require('gulp-load-plugins');
 var os = require('os');
 var packager = require('electron-packager')
 
-//var release_windows = require('./buil.windows');
 
 var projectDir = jetpack;
 var plugins = gulpLoadPlugins();
