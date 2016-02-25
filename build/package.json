@@ -1,8 +1,6 @@
 {
-  "name": "AngularElectron",
+  "name": "DouyuChatrommElectron",
   "version": "0.0.0",
-  "description": "AngularElectron",
-  "main": "main.js",
-  "dependencies": {
-  }
+  "description": "DouyuChatrommElectron",
+  "main": "main.js"
 }

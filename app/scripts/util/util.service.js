@@ -10,7 +10,9 @@
       giftConfig: {},
       toBytes: toBytes,
       parseReadable: parseReadable,
-      showMsg: showMsg
+      showMsg: showMsg,
+      scrollChatRoom: scrollChatRoom,
+      enableScroll: true
     };
 
     return service;
@@ -21,6 +23,11 @@
           .textContent(text)
           .hideDelay(5000)
       );
+    }
+
+    function scrollChatRoom () {
+      var element = document.getElementById("chat-room-id");
+      element.scrollTop = element.scrollHeight + 20;
     }
 
     function parseReadable (rawData) {
@@ -45,7 +52,7 @@
         var giftInfo = service.giftConfig[giftID];
         
         if (giftInfo.type===1) {
-          if (giftInfo.name!=='鱼丸')
+          if (giftInfo.name!=='100鱼丸')
             item.giftName = giftInfo.name+'('+giftInfo.pc+' 鱼丸)';
           else
             item.giftName = giftInfo.pc+' 鱼丸';
@@ -62,7 +69,7 @@
         item.userName = /dnick@=(.*)\//.exec(rawData)[1];
         item.time = /limittime@=(.\d+)/.exec(rawData)[1] / 3600;
       } else {                                      //__________ other
-        console.log(rawData);
+        //console.log(rawData);
         /********************
         * Known unknown data
         * 别房间的火箭 type@=spbc/sn@=点赞哥/dn@=環妹你好/gn@=火箭/gc@=1/drid@=170587/gs@=6/gb@=1/es@=1/gfid@=59/eid@=7/rid@=20360/gid@=74/

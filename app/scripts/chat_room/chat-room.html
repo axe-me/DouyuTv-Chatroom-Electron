@@ -13,10 +13,21 @@
 	</div>
 	<div class="room-info" 
 		ng-if="roomInfoStatus.isReady"
-		layout="row"
-		layout-align="space-around center">
-		<div>{{roomInfo.roomName}}</div>
-		<div>{{roomInfo.anchor}}</div>
+		layout="column"
+		layout-align="center stretch">
+		<div class="room-info-row"
+			 layout="row"
+			 layout-align="space-between center">
+			<div>{{roomInfo.roomName}}</div>
+			<div>{{roomInfo.anchor}}</div>
+		</div>
+		<div class="room-info-row"
+			 layout="row"
+			 layout-align="space-between center">
+			<div ng-class="roomInfo.isLive===1?'online':'offline'">{{roomInfo.isLive===1?"直播中":"未直播"}}</div>
+			<div ng-if="roomInfo.spectator">人气: {{roomInfo.spectator}}</div>
+		</div>
+
 	</div>
 	<div class="chat-room" id="chat-room-id">
 		<div class="msg-item"
