@@ -12,7 +12,8 @@ var minifyCss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var os = require('os');
-var packager = require('electron-packager')
+var electron = require('gulp-electron');
+var packageJson = require('./build/package.json');
 
 
 var projectDir = jetpack;
@@ -76,17 +77,42 @@ gulp.task('run', ['build'], function () {
     childProcess.spawn(electron, ['./build'], { stdio: 'inherit' });
 });
 
-gulp.task('dist',['build'], function () {
-    
-    // switch (os.platform()) {
-    //     case 'darwin':
-    //         // execute build.osx.js 
-    //         break;
-    //     case 'linux':
-    //         //execute build.linux.js
-    //         break;
-    //     case 'win32':
-    //     console.log('sdf')
-    //         return release_windows.build();
-    // }
+gulp.task('clean-cache', function (callback) {
+    return projectDir.cwd('./cache').dirAsync('.', { empty: true });
+});
+
+gulp.task('clean-dist', function (callback) {
+    return projectDir.cwd('./dist').dirAsync('.', { empty: true });
+});
+
+gulp.task('dist', ['clean-cache', 'clean-dist'], function () {
+    //platforms Support 
+    //['darwin','win32','linux','darwin-x64','linux-ia32','linux-x64','win32-ia32','win64-64']
+    var platforms = ['win32-ia32', 'darwin-x64', 'linux-ia32'];
+    gulp.src("")
+    .pipe(electron({
+        src: './build',
+        packageJson: packageJson,
+        release: './dist',
+        cache: './cache',
+        version: 'v0.36.7',
+        packaging: true,
+        platforms: platforms,
+        platformResources: {
+            darwin: {
+                CFBundleDisplayName: packageJson.name,
+                CFBundleIdentifier: packageJson.name,
+                CFBundleName: packageJson.name,
+                CFBundleVersion: packageJson.version,
+                icon: 'icon.icns'
+            },
+            win: {
+                "version-string": packageJson.version,
+                "file-version": packageJson.version,
+                "product-version": packageJson.version,
+                "icon": 'icon.ico'
+            }
+        }
+    }))
+    .pipe(gulp.dest(""));
 });

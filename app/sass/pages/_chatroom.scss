@@ -41,7 +41,7 @@
 	background-color: $grey-800;
 	width: 100vw;
 	height: $chat-room-height;
-	overflow: scroll;
+	overflow-y: scroll;
 
 	.msg-item {
 		padding: 0 15px;

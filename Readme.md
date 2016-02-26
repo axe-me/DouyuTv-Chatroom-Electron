@@ -36,8 +36,9 @@ Run built application by entering following command
 Get the release version with following command:
 
 ```
-gulp build-electron
+gulp dist
 ```
+Files will be generated int dist folder.
 
 #TODO
 ---
