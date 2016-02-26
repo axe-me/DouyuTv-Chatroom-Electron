@@ -69,7 +69,7 @@
         item.userName = /dnick@=(.*)\//.exec(rawData)[1];
         item.time = /limittime@=(.\d+)/.exec(rawData)[1] / 3600;
       } else {                                      //__________ other
-        //console.log(rawData);
+        console.log(rawData);
         /********************
         * Known unknown data
         * 别房间的火箭 type@=spbc/sn@=点赞哥/dn@=環妹你好/gn@=火箭/gc@=1/drid@=170587/gs@=6/gb@=1/es@=1/gfid@=59/eid@=7/rid@=20360/gid@=74/

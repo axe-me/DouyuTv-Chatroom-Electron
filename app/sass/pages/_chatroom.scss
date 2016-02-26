@@ -40,8 +40,10 @@
 .chat-room {
 	background-color: $grey-800;
 	width: 100vw;
-	height: $chat-room-height;
+	min-height: $chat-room-height;
+	height: 100%;
 	overflow-y: scroll;
+	overflow-x: hidden;
 
 	.msg-item {
 		padding: 0 15px;

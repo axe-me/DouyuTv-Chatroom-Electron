@@ -12,7 +12,7 @@ var minifyCss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var os = require('os');
-var electron = require('gulp-electron');
+var gulp_electron = require('gulp-electron');
 var packageJson = require('./build/package.json');
 
 
@@ -90,7 +90,7 @@ gulp.task('dist', ['build', 'clean-cache', 'clean-dist'], function () {
     //['darwin','win32','linux','darwin-x64','linux-ia32','linux-x64','win32-ia32','win64-64']
     var platforms = ['win32-ia32', 'darwin-x64', 'linux-ia32'];
     gulp.src("")
-    .pipe(electron({
+    .pipe(gulp_electron({
         src: './build',
         packageJson: packageJson,
         release: './dist',
