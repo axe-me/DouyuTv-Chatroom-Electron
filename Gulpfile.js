@@ -85,7 +85,7 @@ gulp.task('clean-dist', function (callback) {
     return projectDir.cwd('./dist').dirAsync('.', { empty: true });
 });
 
-gulp.task('dist', ['clean-cache', 'clean-dist'], function () {
+gulp.task('dist', ['build', 'clean-cache', 'clean-dist'], function () {
     //platforms Support 
     //['darwin','win32','linux','darwin-x64','linux-ia32','linux-x64','win32-ia32','win64-64']
     var platforms = ['win32-ia32', 'darwin-x64', 'linux-ia32'];
@@ -110,7 +110,7 @@ gulp.task('dist', ['clean-cache', 'clean-dist'], function () {
                 "version-string": packageJson.version,
                 "file-version": packageJson.version,
                 "product-version": packageJson.version,
-                "icon": 'icon.ico'
+                'icon': 'icon.ico'
             }
         }
     }))

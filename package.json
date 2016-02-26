@@ -1,11 +1,11 @@
 {
-  "name": "DouyuDanmuHelperElectron",
+  "name": "Fishbone",
   "version": "0.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/ShaneXie/DouyuTv-Chatroom-Electron.git"
   },
-  "author": "mainya@gmail.com",
+  "author": "shane369@gmail.com",
   "license": "MIT",
   "devDependencies": {
     "asar": "^0.7.2",
@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "angular-uuid": "0.0.2",
-    "electron-packager": "^5.2.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-minify-css": "^1.2.4",

@@ -1,5 +1,5 @@
-# Douyu Chatroom Electron Cross-platform App
-## 斗鱼弹幕助手[Electron版]
+# Fishbone Douyu Chatroom Helper
+## 鱼骨---斗鱼弹幕助手[跨平台版]
 
 This application is built with Angular JS and Github Electron.
 
