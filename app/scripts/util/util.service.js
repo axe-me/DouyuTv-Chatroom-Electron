@@ -33,6 +33,8 @@
     function parseReadable (rawData) {
       var item = {};
 
+      //console.log(rawData.substring(rawData.indexOf('type'),rawData.length-2));
+
       if (rawData.indexOf('chatmessage') > -1) {          // chat message
         item.type = 'msg';
         item.userName = /\/snick@=(.+?)\//.exec(rawData)[1]; 
