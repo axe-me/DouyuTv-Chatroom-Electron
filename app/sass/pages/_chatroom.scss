@@ -46,6 +46,12 @@
 	}
 }
 
+.danmu-search-bar {
+	width: 100vw;
+	height: $danmu-search-bar-height;
+	background-color: $grey-300;
+}
+
 .chat-room {
 	background-color: $grey-800;
 	width: 100vw;

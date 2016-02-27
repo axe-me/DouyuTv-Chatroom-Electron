@@ -19,17 +19,20 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 		toggleScrollFabStatus: {
 			icon: 'assets/icon/ic_not_interested_black_24px.svg',
 			tooltip: '禁止滚动'
-		}
+		},
+		openSearchBar: false,
+		clearFilter: clearFilter
 	});
-
-	// $interval(function function_name () {
-	// 	console.log($scope.roomInfo);
-	// }, 2000);
 
 	$scope.$on('newMsgArrive', function () {
         $scope.$apply();
         if (util.enableScroll) { util.scrollChatRoom() };
 	});
+
+	function clearFilter () {
+		$scope.openSearchBar = false;
+		$scope.danmuFilter = "";
+	}
 
 	function toggleScroll() {
 		util.enableScroll = !util.enableScroll;
@@ -37,7 +40,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_not_interested_black_24px.svg';
 			$scope.toggleScrollFabStatus.tooltip = '禁止滚动';
 		} else {
-			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_loop_black_24px.svg';
+			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_format_line_spacing_black_24px.svg';
 			$scope.toggleScrollFabStatus.tooltip = '开启滚动';
 		}
 	}

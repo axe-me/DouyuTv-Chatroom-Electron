@@ -32,7 +32,7 @@ Run built application by entering following command
 
 #Release
 ---
-
+* Don't forget to disable devtool befor build!
 Get the release version with following command:
 
 ```
@@ -43,7 +43,6 @@ Files will be generated int dist folder.
 #TODO
 ---
 
-* 禁止滚动
 * 屏蔽礼物
 * 关键字roll观众
 * 发言
