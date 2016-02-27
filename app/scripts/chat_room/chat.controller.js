@@ -9,11 +9,17 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	var currentRoom;
 
 	angular.extend($scope, {
-		roomAddr: "http://www.douyutv.com/532152",
+		isOpenDial: false,
+		roomAddr: "http://www.douyutv.com/67554",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
-		messages: chatService.messages
+		messages: chatService.messages,
+		toggleScroll: toggleScroll,
+		toggleScrollFabStatus: {
+			icon: 'assets/icon/ic_not_interested_black_24px.svg',
+			tooltip: '禁止滚动'
+		}
 	});
 
 	// $interval(function function_name () {
@@ -21,9 +27,20 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	// }, 2000);
 
 	$scope.$on('newMsgArrive', function () {
-        if (util.enableScroll) { util.scrollChatRoom() };
         $scope.$apply();
+        if (util.enableScroll) { util.scrollChatRoom() };
 	});
+
+	function toggleScroll() {
+		util.enableScroll = !util.enableScroll;
+		if (util.enableScroll) {
+			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_not_interested_black_24px.svg';
+			$scope.toggleScrollFabStatus.tooltip = '禁止滚动';
+		} else {
+			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_loop_black_24px.svg';
+			$scope.toggleScrollFabStatus.tooltip = '开启滚动';
+		}
+	}
 
 	function startGetMsg () {
 		if (currentRoom !== $scope.roomAddr) {

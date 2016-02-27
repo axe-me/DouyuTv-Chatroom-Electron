@@ -1,8 +1,17 @@
 
 .main-container {
 	width: 100vw;
-	min-height: 100vh;
+	height: 100vh;
 	background-color: $grey-800;
+}
+
+.setting-fab-dial {
+	position: absolute;
+	right: 10px;
+	bottom: 50px;
+	.setting-icon {
+		background-color: $grey-500;
+	}
 }
 
 .top-bar {
@@ -40,8 +49,7 @@
 .chat-room {
 	background-color: $grey-800;
 	width: 100vw;
-	min-height: $chat-room-height;
-	height: 100%;
+	height: $chat-room-height;
 	overflow-y: scroll;
 	overflow-x: hidden;
 

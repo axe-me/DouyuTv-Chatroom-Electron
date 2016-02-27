@@ -381,7 +381,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	var currentRoom;
 
 	angular.extend($scope, {
-		roomAddr: "http://www.douyutv.com/532152",
+		roomAddr: "http://www.douyutv.com/67554",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
@@ -393,8 +393,8 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	// }, 2000);
 
 	$scope.$on('newMsgArrive', function () {
-        if (util.enableScroll) { util.scrollChatRoom() };
         $scope.$apply();
+        if (util.enableScroll) { util.scrollChatRoom() };
 	});
 
 	function startGetMsg () {

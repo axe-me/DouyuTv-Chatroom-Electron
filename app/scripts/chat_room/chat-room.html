@@ -63,4 +63,38 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="setting-fab-dial"
+		layout="row"
+		layout-align="center center"
+		>
+		<md-fab-speed-dial 
+			md-direction="up"
+			md-open="isOpenDial"
+			class="md-scale"
+			ng-mouseenter="isOpenDial=true"
+			ng-mouseleave="isOpenDial=false">
+	      <md-fab-trigger>
+	        <md-button aria-label="settings"
+	        	class="md-fab md-raised md-mini setting-icon">
+	          <md-tooltip md-direction="left" md-autohide="true">选项</md-tooltip>
+	          <md-icon
+	          	class="setting-icon" 
+	          	md-svg-src="assets/icon/ic_settings_black_24px.svg"></md-icon>
+	        </md-button>
+	      </md-fab-trigger>
+
+	      <md-fab-actions>
+	          <md-button
+	          	class="md-fab md-raised md-mini"
+	          	ng-click="toggleScroll()">
+	            <md-tooltip md-autohide="true"
+	            	md-direction="left">
+	            	{{toggleScrollFabStatus.tooltip}}
+	            </md-tooltip>
+	            <md-icon md-svg-src="{{ toggleScrollFabStatus.icon }}" ></md-icon>
+	          </md-button>
+	      </md-fab-actions>
+	    </md-fab-speed-dial>
+	</div>
 </div>
