@@ -1,0 +1,53 @@
+<div class="roll-container"
+	layout="column"
+	layout-align="start center">
+
+	<div class="goback-btn">
+		<md-button
+			class="md-icon-button"
+			aria-label="Go Back"
+			ui-sref="main">
+			<md-icon 
+				md-svg-icon="assets/icon/ic_keyboard_backspace_black_24px.svg">
+			</md-icon>
+		</md-button>
+	</div>
+
+	<div class="roll-type">
+		<md-tabs md-dynamic-height
+			md-border-bottom
+			md-center-tabs="true"
+			md-stretch-tabs="always">
+		  <md-tab label="按关键字">
+		    <md-content class="md-padding roll-tab">
+				<md-input-container class="md-block">
+					<label>请输入关键字:</label>
+					<input ng-model="rollKey">
+				</md-input-container>
+		    </md-content>
+		  </md-tab>
+		  <md-tab label="按鱼丸">
+		    <md-content class="md-padding roll-tab"
+		    	layout="row"
+				layout-align="center center">
+				<md-radio-group ng-model="fishballType"
+					layout="row"
+					layout-align="center center">
+					<md-radio-button value="luck">比运气</md-radio-button>
+					<md-radio-button value="amount">比数量</md-radio-button>
+				</md-radio-group>
+		    </md-content>
+		  </md-tab>
+		</md-tabs>
+	</div>
+
+	<div class="roll-num"
+		layout="row"
+		layout-align="space-around stretch">
+		<md-input-container class="md-block">
+			<label>请输入要Roll的数量:</label>
+			<input ng-model="rollKey">
+		</md-input-container>
+		 <md-button class="md-raised">GO!</md-button>
+	</div>
+</div>

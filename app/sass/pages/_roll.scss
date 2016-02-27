@@ -1,0 +1,29 @@
+.roll-container {
+	background-color: $grey-300;
+	width: 100vw;
+	height: 100vh;
+
+	.goback-btn {
+		position: absolute;
+		top: 4px;
+		z-index: 2;
+	}
+
+	.roll-type {
+		// border: 2px dashed red;
+		width: 100vw;
+
+		.roll-tab {
+			background-color: $grey-400;
+			padding: 2px;
+			height: 50px;
+			overflow: hidden;
+		}
+	}
+
+	.roll-num {
+		width: 100vw;
+		height: 60px;
+		background-color: $grey-500;
+	}
+}

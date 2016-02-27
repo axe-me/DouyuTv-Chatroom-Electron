@@ -42,8 +42,6 @@ Files will be generated int dist folder.
 
 #TODO
 ---
-
-* 屏蔽礼物
 * 关键字roll观众
 * 发言
 * 自动回复

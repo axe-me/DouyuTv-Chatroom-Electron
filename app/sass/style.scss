@@ -1,6 +1,7 @@
 @import 'base/base';
 
 @import 'pages/chatroom';
+@import 'pages/roll';
 
 html, body {
 	width: 100%;
@@ -10,6 +11,10 @@ html, body {
 
 *:focus {
     outline: none;
+}
+
+::selection {
+  background: $light-green-300;
 }
 
 ::-webkit-scrollbar {
