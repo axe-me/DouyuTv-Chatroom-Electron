@@ -11,6 +11,7 @@
     util,
     uuid,
     md5,
+    lodash,
     $http,
     $interval,
     $rootScope
@@ -223,17 +224,33 @@
         var msg = data.toString();
         var qItem = util.parseReadable(msg);
         service.messages.push(qItem);
+        $rootScope.$broadcast('newMsgArrive');
+        
         if (service.isStartRoll) {
           if (rollType==='keyWord' && qItem.type === 'msg' && qItem.content.indexOf(rollKey)>-1) {
+            qItem.getLucky = false;
             service.candidates.push(qItem);
+            $rootScope.$broadcast('newCandidateArrive');
           }
           if (rollType==='gift' && qItem.type==='gift') {
-            var newCandi = {'name':qItem.username, 'giftValue': qItem.giftValue};
-            service.candidates.push(qItem);
+            var idx = lodash.findIndex(service.candidates, function(o) {
+              return o.name === qItem.userName; 
+            });
+            if (idx>-1) {
+              service.candidates[idx].giftValue += qItem.giftValue
+              $rootScope.$broadcast('newCandidateArrive');
+            } else {
+              var newCandi = {
+                userName: qItem.userName,
+                giftValue: qItem.giftValue,
+                getLucky: false
+              };
+              service.candidates.push(newCandi);
+              $rootScope.$broadcast('newCandidateArrive');
+            }
           }
-          $rootScope.$broadcast('newCandidateArrive');
+
         }
-        $rootScope.$broadcast('newMsgArrive');
       });
 
       danmuClient.on('end', function () {

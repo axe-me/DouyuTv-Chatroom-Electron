@@ -6,6 +6,7 @@
 		<md-button
 			class="md-icon-button"
 			aria-label="Go Back"
+			ng-click="enableScrollChat()"
 			ui-sref="main"
 			ng-disabled="lockInput">
 			<md-icon 
@@ -54,7 +55,7 @@
 		layout="row"
 		layout-align="space-around stretch">
 		<md-input-container class="md-block roll-num-input">
-			<label>请输入要Roll的数量:</label>
+			<label>请输入要Roll的人数:</label>
 			<input ng-model="rollNum" ng-disabled="lockInput">
 		</md-input-container>
 		 <md-button class="md-raised roll-start-btn"
@@ -64,8 +65,43 @@
 	</div>
 
 	<div class="roll-candidates">
-		<div ng-repeat="candi in candidates">
-			{{ candi }}
+		<div class="roll-gift-candi-wrapper" 
+			ng-if="rollType==='gift'">
+			<div flex class="gift-candi-header"
+				layout="row"
+				layout-align="space-around center"
+				ng-if="candidates.length > 0">
+				<span flex="50"
+					layout="row"
+					layout-align="center center">斗鱼ID</span>
+				<span flex="50"
+					layout="row"
+					layout-align="center center">总价值</span>
+			</div>
+			<div flex
+				layout="row"
+				layout-align="space-around center"
+				ng-repeat="candi in candidates | orderBy: ['-getLucky', '-giftValue']"
+				ng-class="{'gift-candi-top': $index<rollNum, 'lucky-candi': candi.getLucky}">
+				<span flex="50"
+					layout="row"
+					layout-align="center center">{{candi.userName}}</span>
+				<span flex="50"
+					layout="row"
+					layout-align="center center">{{candi.giftValue}}</span>
+			</div>
+		</div>
+		<div layout="row"
+			layout-wrap
+			ng-if="rollType==='keyWord'">
+			<div flex="50"
+				layout="row"
+				layout-align="center center"
+				class="key-candi"
+				ng-repeat="candi in candidates | orderBy:'-getLucky'"
+				ng-class="{'lucky-candi': candi.getLucky}">
+				{{candi.userName}}
+			</div>
 		</div>
 	</div>
 </div>

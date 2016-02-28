@@ -9,7 +9,7 @@
   function rollRoute($stateProvider) {
     $stateProvider
       .state('roll', {
-        url: '/',
+        url: '/roll',
         templateUrl: './scripts/roll_gift/roll_gift.html',
         controller: 'RollController',
       });

@@ -10,7 +10,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 
 	angular.extend($scope, {
 		isOpenDial: false,
-		roomAddr: "http://www.douyutv.com/67554",
+		roomAddr: "http://www.douyutv.com/wt55kai",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
@@ -21,6 +21,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 			tooltip: '禁止滚动'
 		},
 		openSearchBar: false,
+		disableScroll: disableScroll,
 		clearFilter: clearFilter
 	});
 
@@ -32,6 +33,10 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	function clearFilter () {
 		$scope.openSearchBar = false;
 		$scope.danmuFilter = "";
+	}
+
+	function disableScroll() {
+		util.enableScroll = false;
 	}
 
 	function toggleScroll() {

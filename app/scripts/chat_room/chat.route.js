@@ -9,7 +9,7 @@
   function chatRoomRoute($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('main', {
-        url: '/main',
+        url: '/',
         templateUrl: './scripts/chat_room/chat-room.html',
         controller: 'ChatController',
       });

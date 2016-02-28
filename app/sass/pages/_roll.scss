@@ -10,7 +10,6 @@
 	}
 
 	.roll-type {
-		// border: 2px dashed red;
 		width: 100vw;
 
 		.md-tab {
@@ -28,7 +27,7 @@
 			overflow: hidden;
 
 			&.roll-key {
-				padding: 2px 10px;
+				padding: 0 10px;
 			}
 		}
 
@@ -51,6 +50,51 @@
 		.roll-start-btn {
 			color: $green-700;
 			// min-width: 55px;
+		}
+	}
+	
+	.roll-candidates {
+		height: $roll-candi-height;
+		width: 100vw;
+		background-color: $grey-800;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		color: white;
+		
+		.roll-gift-candi-wrapper {
+			height: 100%;
+			width: 100%;
+
+			.gift-candi-header {
+				height: 30px;
+				background-color: $grey-900;
+				color: $grey-100;
+				border-bottom: solid $red-700 2px;
+			}
+
+			.gift-candi-top {
+				color: $red-700;
+				height: 30px;
+				font-weight: bold;
+				font-size: 110%; 
+				background-color: $yellow-a700;
+			}
+		}
+
+		.key-candi {
+			padding: 3px 0;
+			color: $yellow-a700;
+		}
+		.key-candi:hover {
+			color: $light-green-a400;
+			background-color: $grey-900;
+			box-shadow: 0 0 1px 1px white;
+			cursor: pointer;
+		}
+		.lucky-candi {
+			color: white;
+			background-color: $red-700;
+			box-shadow: 0 0 1px 1px $yellow-a700;
 		}
 	}
 }
