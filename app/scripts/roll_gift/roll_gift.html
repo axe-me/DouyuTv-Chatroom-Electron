@@ -6,9 +6,10 @@
 		<md-button
 			class="md-icon-button"
 			aria-label="Go Back"
-			ui-sref="main">
+			ui-sref="main"
+			ng-disabled="lockInput">
 			<md-icon 
-				md-svg-icon="assets/icon/ic_keyboard_backspace_black_24px.svg">
+				md-svg-icon="assets/icon/ic_keyboard_backspace_white_24px.svg">
 			</md-icon>
 		</md-button>
 	</div>
@@ -18,23 +19,31 @@
 			md-border-bottom
 			md-center-tabs="true"
 			md-stretch-tabs="always">
-		  <md-tab label="按关键字">
-		    <md-content class="md-padding roll-tab">
+		  <md-tab label="按关键字"
+		  	ng-click="rollType='keyWord';"
+		  	ng-disabled="lockInput">
+		    <md-content class="md-padding roll-tab roll-key">
 				<md-input-container class="md-block">
 					<label>请输入关键字:</label>
-					<input ng-model="rollKey">
+					<input ng-model="rollKey" ng-disabled="lockInput">
 				</md-input-container>
 		    </md-content>
 		  </md-tab>
-		  <md-tab label="按鱼丸">
+		  <md-tab label="按鱼丸"
+		  	ng-click="rollType='gift';"
+		  	ng-disabled="lockInput">
 		    <md-content class="md-padding roll-tab"
 		    	layout="row"
 				layout-align="center center">
-				<md-radio-group ng-model="fishballType"
+				<md-radio-group ng-model="giftType"
 					layout="row"
 					layout-align="center center">
-					<md-radio-button value="luck">比运气</md-radio-button>
-					<md-radio-button value="amount">比数量</md-radio-button>
+					<md-radio-button value="luck"
+						class="md-primary"
+						ng-disabled="lockInput">比运气</md-radio-button>
+					<md-radio-button value="amount"
+						class="md-primary"
+						ng-disabled="lockInput">比数量</md-radio-button>
 				</md-radio-group>
 		    </md-content>
 		  </md-tab>
@@ -44,10 +53,19 @@
 	<div class="roll-num"
 		layout="row"
 		layout-align="space-around stretch">
-		<md-input-container class="md-block">
+		<md-input-container class="md-block roll-num-input">
 			<label>请输入要Roll的数量:</label>
-			<input ng-model="rollKey">
+			<input ng-model="rollNum" ng-disabled="lockInput">
 		</md-input-container>
-		 <md-button class="md-raised">GO!</md-button>
+		 <md-button class="md-raised roll-start-btn"
+		 	ng-click="rollFunc()">
+		 	{{ rollBtnText }}
+		 </md-button>
+	</div>
+
+	<div class="roll-candidates">
+		<div ng-repeat="candi in candidates">
+			{{ candi }}
+		</div>
 	</div>
 </div>

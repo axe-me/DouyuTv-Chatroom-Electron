@@ -13,17 +13,44 @@
 		// border: 2px dashed red;
 		width: 100vw;
 
+		.md-tab {
+			background-color: $grey-700;
+			color: $grey-100;
+			&.md-active {
+				background-color: $grey-900;
+			}
+		}
+
 		.roll-tab {
-			background-color: $grey-400;
+			background-color: $grey-300;
 			padding: 2px;
-			height: 50px;
+			height: 60px;
 			overflow: hidden;
+
+			&.roll-key {
+				padding: 2px 10px;
+			}
+		}
+
+		md-ink-bar {
+			color: $blue-900;
+			background-color: $blue-900;
 		}
 	}
 
 	.roll-num {
 		width: 100vw;
 		height: 60px;
-		background-color: $grey-500;
+		color: white;
+		border-bottom: solid 2px $red-700;
+
+		.roll-num-input {
+			width: 60vw;
+		}
+
+		.roll-start-btn {
+			color: $green-700;
+			// min-width: 55px;
+		}
 	}
 }

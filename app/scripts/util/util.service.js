@@ -47,11 +47,14 @@
 
         item.str = item.userName + ' 进入直播间';
       } else if (rawData.indexOf('dgn') > -1) {         // gift
+        console.log(rawData);
         item.type = 'gift';
         item.userName = /\/src_ncnm@=(.+?)\//.exec(rawData)[1];
         item.hits = /\/hits@=(.+?)\//.exec(rawData)[1];
         var giftID = /gfid@=(\d+)/.exec(rawData)[1];
         var giftInfo = service.giftConfig[giftID];
+        
+        item.giftValue=giftInfo.pc;
         
         if (giftInfo.type===1) {
           if (giftInfo.name!=='100鱼丸')
@@ -59,6 +62,7 @@
           else
             item.giftName = giftInfo.pc+' 鱼丸';
         } else {
+          if (giftInfo.pc === 10) {item.giftValue=100};
           item.giftName = giftInfo.name+'('+giftInfo.pc/100+' 鱼翅)';
         }
 

@@ -20,10 +20,12 @@
     var authServers;
     var danmuServer = {
       ip: 'danmu.douyutv.com',
-      port: 8602
+      port: 8601
     }
     var authClient;
     var danmuClient;
+    var rollType;
+    var rollKey;
 
     $rootScope.$on('abortCurrConn', function () {
         console.log('ending client...');
@@ -42,11 +44,20 @@
         hasStartFetchMsg: false,
         stopFetchMsg: false
       },
+      isStartRoll: false,
+      candidates: [],
+      startRoll: startRoll,
       messages: []
     };
 
 
     return service;
+
+    function startRoll (type, key) {
+      service.isStartRoll = true;
+      rollType = type;
+      rollKey = key;
+    }
 
     function startUpdateRoomInfo () {
       keepUpdateRoomInfo = $interval(function () {
@@ -212,6 +223,16 @@
         var msg = data.toString();
         var qItem = util.parseReadable(msg);
         service.messages.push(qItem);
+        if (service.isStartRoll) {
+          if (rollType==='keyWord' && qItem.type === 'msg' && qItem.content.indexOf(rollKey)>-1) {
+            service.candidates.push(qItem);
+          }
+          if (rollType==='gift' && qItem.type==='gift') {
+            var newCandi = {'name':qItem.username, 'giftValue': qItem.giftValue};
+            service.candidates.push(qItem);
+          }
+          $rootScope.$broadcast('newCandidateArrive');
+        }
         $rootScope.$broadcast('newMsgArrive');
       });
 
