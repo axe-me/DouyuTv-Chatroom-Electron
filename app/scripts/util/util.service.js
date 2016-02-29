@@ -89,13 +89,31 @@
 
         item.str = item.userName + '赠送礼物 x' + item.hits;
       } else if (rawData.indexOf('blackres') > -1) {
-        item.type = 'blackList'
+        item.type = 'blackList';
         item.managerName = /snick@=(.*)\/dnick/.exec(rawData)[1];
         item.userName = /dnick@=(.*)\//.exec(rawData)[1];
         item.time = /limittime@=(.\d+)/.exec(rawData)[1] / 3600;
       } else if (rawData.indexOf('keeplive') > -1) {
         //do nothing
         item.type = 'keeplive';
+      } else if (rawData.indexOf('bc_buy_deserve') > -1) {
+        item.type = 'gift';
+        item.userName = /Snick@A=(.*)@Srg/.exec(rawData)[1];
+        item.hits = /hits@=(\d)/.exec(rawData)[1];
+
+        var lvl = /lev@=(\d)/.exec(rawData)[1];
+        if (lvl==1) {
+          item.giftName = "初级酬勤";
+          item.giftValue = 15000;
+        };
+        if (lvl==2) {
+          item.giftName = "中级酬勤";
+          item.giftValue = 30000;
+        };
+        if (lvl==3) {
+          item.giftName = "高级酬勤";
+          item.giftValue = 50000;
+        };
       } else {                                      //__________ other
         console.log(rawData);
         /********************

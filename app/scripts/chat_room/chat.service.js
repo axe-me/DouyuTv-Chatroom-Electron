@@ -234,7 +234,7 @@
           }
           if (rollType==='gift' && qItem.type==='gift') {
             var idx = lodash.findIndex(service.candidates, function(o) {
-              return o.name === qItem.userName; 
+              return o.userName === qItem.userName; 
             });
             if (idx>-1) {
               service.candidates[idx].giftValue += qItem.giftValue
