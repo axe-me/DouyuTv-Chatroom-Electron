@@ -3,8 +3,12 @@
 
 This application is built with Angular JS and Github Electron.
 
-
-
+#Features
+---
+* 跨平台 Cross-platform, it's written using Github Electron.
+* 抽奖 Roll
+* 搜索弹幕 Searching
+ 
 #Install
 --- 
 
@@ -42,9 +46,12 @@ Files will be generated int dist folder.
 
 #TODO
 ---
-* 关键字roll观众
-* 发言
-* 自动回复
-*  and more !
+* Send Message
+	- Too lazy to implement this, lol. Well, the true reason is I didn't find this is necessary, why a streamer need text communication while streaming?? Another reason is sending messages requires user login which maybe cause security issues (eg. some bad ass copy my code and add some account steal code in it then re-publish it).
+* Export messages
+
+#Bugs
+---
+	While developing this app I found douyutv actually using two sets of message protacol. I do have some code to handle this shity protacol, but I'm not sure if I handled all of issues caused by this. So, if you find any bugs please create an Issue.
 
 

@@ -93,6 +93,9 @@
         item.managerName = /snick@=(.*)\/dnick/.exec(rawData)[1];
         item.userName = /dnick@=(.*)\//.exec(rawData)[1];
         item.time = /limittime@=(.\d+)/.exec(rawData)[1] / 3600;
+      } else if (rawData.indexOf('keeplive') > -1) {
+        //do nothing
+        item.type = 'keeplive';
       } else {                                      //__________ other
         console.log(rawData);
         /********************
