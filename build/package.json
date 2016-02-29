@@ -1,6 +1,12 @@
 {
-  "name": "DouyuChatrommElectron",
-  "version": "0.0.0",
-  "description": "DouyuChatrommElectron",
-  "main": "main.js"
+  "name": "Fishbone",
+  "version": "0.1.0",
+  "description": "Fishbone--DouyuTv Danmu Helper",
+  "main": "main.js",
+  "author": "shane369@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ShaneXie/DouyuTv-Chatroom-Electron.git"
+  }
 }

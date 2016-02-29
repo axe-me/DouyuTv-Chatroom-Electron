@@ -27,11 +27,23 @@
 			<div ng-class="roomInfo.isLive===1?'online':'offline'">{{roomInfo.isLive===1?"直播中":"未直播"}}</div>
 			<div ng-if="roomInfo.spectator">人气: {{roomInfo.spectator}}</div>
 		</div>
-
 	</div>
+
+	<div class="danmu-search-bar"
+		ng-show="openSearchBar">
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>请输入要搜索的内容:</label>
+			<input ng-model="danmuFilter">
+			<md-icon 
+				ng-click="clearFilter()"
+				md-svg-src="assets/icon/ic_clear_black_24px.svg"
+				style="display:inline-block;"></md-icon>
+		</md-input-container>
+	</div>
+
 	<div class="chat-room" id="chat-room-id">
 		<div class="msg-item"
-			ng-repeat="item in messages track by $index"
+			ng-repeat="item in messages | filter: {$:danmuFilter} track by $index "
 			ng-if="item.type!=='unknown'">
 			<div class="chat-msg"
 				ng-if="item.type==='msg'">
@@ -62,5 +74,57 @@
 				<span> 小时</span>
 			</div>
 		</div>
+	</div>
+
+	<div class="setting-fab-dial"
+		layout="row"
+		layout-align="center center"
+		>
+		<md-fab-speed-dial 
+			md-direction="up"
+			md-open="isOpenDial"
+			class="md-scale"
+			ng-mouseenter="isOpenDial=true"
+			ng-mouseleave="isOpenDial=false">
+	      <md-fab-trigger>
+	        <md-button aria-label="settings"
+	        	class="md-fab md-raised md-mini setting-icon">
+	          <md-icon
+	          	class="setting-icon" 
+	          	md-svg-src="assets/icon/ic_view_list_black_24px.svg"></md-icon>
+	        </md-button>
+	      </md-fab-trigger>
+
+	      <md-fab-actions>
+	      	   <md-button
+	          	class="md-fab md-raised md-mini"
+	          	ng-click="openSearchBar=true">
+	            <md-tooltip md-autohide="true"
+	            	md-direction="left">
+	            	搜索弹幕
+	            </md-tooltip>
+	            <md-icon md-svg-src="assets/icon/ic_search_black_24px.svg" ></md-icon>
+	          </md-button>
+	          <md-button
+	          	class="md-fab md-raised md-mini"
+	          	ng-click="disableScroll()"
+	          	ui-sref="roll">
+	            <md-tooltip md-autohide="true"
+	            	md-direction="left">
+	            	ROLL
+	            </md-tooltip>
+	            <md-icon md-svg-src="assets/icon/ic_group_work_black_24px.svg" ></md-icon>
+	          </md-button>
+	          <md-button
+	          	class="md-fab md-raised md-mini"
+	          	ng-click="toggleScroll()">
+	            <md-tooltip md-autohide="true"
+	            	md-direction="left">
+	            	{{toggleScrollFabStatus.tooltip}}
+	            </md-tooltip>
+	            <md-icon md-svg-src="{{ toggleScrollFabStatus.icon }}" ></md-icon>
+	          </md-button>
+	      </md-fab-actions>
+	    </md-fab-speed-dial>
 	</div>
 </div>

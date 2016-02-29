@@ -13,7 +13,7 @@ var sass = require('gulp-sass');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var os = require('os');
 var gulp_electron = require('gulp-electron');
-var packageJson = require('./build/package.json');
+var packageJson = require('./app/package.json');
 
 
 var projectDir = jetpack;
@@ -36,6 +36,7 @@ gulp.task('copy', ['clean'], function () {
             './node_modules/**/*',
             '*.html',
             '*.css',
+            '*.svg',
             'main.js',
             'package.json'
         ]
@@ -85,10 +86,10 @@ gulp.task('clean-dist', function (callback) {
     return projectDir.cwd('./dist').dirAsync('.', { empty: true });
 });
 
-gulp.task('dist', ['build', 'clean-cache', 'clean-dist'], function () {
+gulp.task('dist', ['build', 'clean-dist'], function () {
     //platforms Support 
     //['darwin','win32','linux','darwin-x64','linux-ia32','linux-x64','win32-ia32','win64-64']
-    var platforms = ['win32-ia32', 'darwin-x64', 'linux-ia32'];
+    var platforms = ['win32-ia32', 'darwin-x64'];
     gulp.src("")
     .pipe(gulp_electron({
         src: './build',

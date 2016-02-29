@@ -9,7 +9,8 @@
         'ngMaterial',
         'ngAnimate',
         'angular-uuid',
-        'angular-md5'
+        'angular-md5',
+        'ngLodash'
     ])
 
 })();
@@ -37,6 +38,25 @@
 (function() {
   'use strict';
 
+  angular
+    .module('app')
+    .config(rollRoute);
+
+  /** @ngInject */
+  function rollRoute($stateProvider) {
+    $stateProvider
+      .state('roll', {
+        url: '/roll',
+        templateUrl: './scripts/roll_gift/roll_gift.html',
+        controller: 'RollController',
+      });
+  }
+
+})();
+
+(function() {
+  'use strict';
+
   var http = require('http');
   var net = require('net');
 
@@ -47,6 +67,7 @@
     util,
     uuid,
     md5,
+    lodash,
     $http,
     $interval,
     $rootScope
@@ -56,10 +77,12 @@
     var authServers;
     var danmuServer = {
       ip: 'danmu.douyutv.com',
-      port: 8602
+      port: 8601
     }
     var authClient;
     var danmuClient;
+    var rollType;
+    var rollKey;
 
     $rootScope.$on('abortCurrConn', function () {
         console.log('ending client...');
@@ -78,11 +101,20 @@
         hasStartFetchMsg: false,
         stopFetchMsg: false
       },
+      isStartRoll: false,
+      candidates: [],
+      startRoll: startRoll,
       messages: []
     };
 
 
     return service;
+
+    function startRoll (type, key) {
+      service.isStartRoll = true;
+      rollType = type;
+      rollKey = key;
+    }
 
     function startUpdateRoomInfo () {
       keepUpdateRoomInfo = $interval(function () {
@@ -249,6 +281,32 @@
         var qItem = util.parseReadable(msg);
         service.messages.push(qItem);
         $rootScope.$broadcast('newMsgArrive');
+        
+        if (service.isStartRoll) {
+          if (rollType==='keyWord' && qItem.type === 'msg' && qItem.content.indexOf(rollKey)>-1) {
+            qItem.getLucky = false;
+            service.candidates.push(qItem);
+            $rootScope.$broadcast('newCandidateArrive');
+          }
+          if (rollType==='gift' && qItem.type==='gift') {
+            var idx = lodash.findIndex(service.candidates, function(o) {
+              return o.name === qItem.userName; 
+            });
+            if (idx>-1) {
+              service.candidates[idx].giftValue += qItem.giftValue
+              $rootScope.$broadcast('newCandidateArrive');
+            } else {
+              var newCandi = {
+                userName: qItem.userName,
+                giftValue: qItem.giftValue,
+                getLucky: false
+              };
+              service.candidates.push(newCandi);
+              $rootScope.$broadcast('newCandidateArrive');
+            }
+          }
+
+        }
       });
 
       danmuClient.on('end', function () {
@@ -300,30 +358,55 @@
     function parseReadable (rawData) {
       var item = {};
 
-      if (rawData.indexOf('chatmessage') > -1) {          // chat message
+      //console.log(rawData.substring(rawData.indexOf('type'),rawData.length-2));
+
+      if (rawData.indexOf('chatmessage') > -1 || rawData.indexOf('chatmsg') > -1) {          // chat message
         item.type = 'msg';
-        item.userName = /\/snick@=(.+?)\//.exec(rawData)[1]; 
-        item.content = /\/content@=(.+?)\//.exec(rawData)[1];
+        var nameRegexResult = /\/snick@=(.+?)\//.exec(rawData);
+        var contentRegexResult = /\/content@=(.+?)\//.exec(rawData);
+
+        if (nameRegexResult!==null) 
+          item.userName = nameRegexResult[1];
+        else
+          item.userName = /\/nn@=(.+?)\//.exec(rawData)[1]; 
+
+        if (contentRegexResult!==null) 
+          item.content = contentRegexResult[1];
+        else
+          item.content = /\/txt@=(.+?)\//.exec(rawData)[1];
 
         item.str = item.userName + ': ' + item.content;
-      } else if (rawData.indexOf('userenter') > -1) {       //user enter
+      } else if (rawData.indexOf('userenter') > -1 || rawData.indexOf('uenter') > -1) {       //user enter
         item.type = 'userEnter';
-        item.userName = /nick@A=(.+?)@/.exec(rawData)[1];
+        if (rawData.indexOf('userenter') > -1) {
+          item.userName = /nick@A=(.+?)@/.exec(rawData)[1];
+        } else{
+          item.userName = /nn@=(.+?)\//.exec(rawData)[1];
+        }
 
         item.str = item.userName + ' 进入直播间';
-      } else if (rawData.indexOf('dgn') > -1) {         // gift
+      } else if (rawData.indexOf('dgn') > -1 || rawData.indexOf('dgb') > -1) {         // gift
         item.type = 'gift';
-        item.userName = /\/src_ncnm@=(.+?)\//.exec(rawData)[1];
-        item.hits = /\/hits@=(.+?)\//.exec(rawData)[1];
+        if (rawData.indexOf('dgn') > -1) {
+          item.userName = /\/src_ncnm@=(.+?)\//.exec(rawData)[1];
+          item.hits = /\/hits@=(.+?)\//.exec(rawData)[1];
+        } else{
+          item.userName = /\/nn@=(.+?)\//.exec(rawData)[1];
+          var hitRegexMatch = /hits@=(.+?)\//.exec(rawData);
+          item.hits = hitRegexMatch===null?1:hitRegexMatch[1];
+        }
         var giftID = /gfid@=(\d+)/.exec(rawData)[1];
         var giftInfo = service.giftConfig[giftID];
         
+        item.giftValue=giftInfo.pc;
+
         if (giftInfo.type===1) {
           if (giftInfo.name!=='100鱼丸')
             item.giftName = giftInfo.name+'('+giftInfo.pc+' 鱼丸)';
           else
             item.giftName = giftInfo.pc+' 鱼丸';
         } else {
+          if (giftInfo.pc === 10) {item.giftValue=100};
           item.giftName = giftInfo.name+'('+giftInfo.pc/100+' 鱼翅)';
         }
 
@@ -338,6 +421,8 @@
       } else {                                      //__________ other
         console.log(rawData);
         /********************
+        * type@=bc_buy_deserve/level@=3/lev@=3/rid@=138286/gid@=80/cnt@=1/hits@=4/sid@=1895348/sui@=id@A=1895348@Sname@A=qq_GtBWGI1K@Snick@A=Leslie最爱雷同学@Srg@A=1@Spg@A=1@Srt@A=1408094829@Sbg@A=0@Sweight@A=500@Sstrength@A=12700@Scps_id@A=0@Sps@A=1@Ses@A=1@Sver@A=20150929@Sm_deserve_lev@A=3@Scq_cnt@A=1@Sbest_dlev@A=0@Sglobal_ban_lev@A=0@Sexp@A=12700@Slevel@A=3@Scurr_exp@A=7200@Sup_need@A=1800@Sgt@A=0@S/
+        * type@=donateres/rid@=138286/gid@=88/ms@=100/sb@=208/src_strength@=10100/dst_weight@=439625822/hc@=1/r@=0/gfid@=1/gfcnt@=0/sui@=id@A=13782391@Srg@A=1@Snick@A=2860641930@Scur_lev@A=0@Scq_cnt@A=0@Sbest_dlev@A=0@Slevel@A=4@S/
         * Known unknown data
         * 别房间的火箭 type@=spbc/sn@=点赞哥/dn@=環妹你好/gn@=火箭/gc@=1/drid@=170587/gs@=6/gb@=1/es@=1/gfid@=59/eid@=7/rid@=20360/gid@=74/
         * 用户升级 type@=upgrade/uid@=34667344/rid@=52/gid@=262/nn@=小不懂之魑魅魍魉/level@=4/ douyuMsg.service.js:41
@@ -381,21 +466,46 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	var currentRoom;
 
 	angular.extend($scope, {
-		roomAddr: "http://www.douyutv.com/67554",
+		isOpenDial: false,
+		roomAddr: "http://www.douyutv.com/wt55kai",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
-		messages: chatService.messages
+		messages: chatService.messages,
+		toggleScroll: toggleScroll,
+		toggleScrollFabStatus: {
+			icon: 'assets/icon/ic_not_interested_black_24px.svg',
+			tooltip: '禁止滚动'
+		},
+		openSearchBar: false,
+		disableScroll: disableScroll,
+		clearFilter: clearFilter
 	});
-
-	// $interval(function function_name () {
-	// 	console.log($scope.roomInfo);
-	// }, 2000);
 
 	$scope.$on('newMsgArrive', function () {
         $scope.$apply();
         if (util.enableScroll) { util.scrollChatRoom() };
 	});
+
+	function clearFilter () {
+		$scope.openSearchBar = false;
+		$scope.danmuFilter = "";
+	}
+
+	function disableScroll() {
+		util.enableScroll = false;
+	}
+
+	function toggleScroll() {
+		util.enableScroll = !util.enableScroll;
+		if (util.enableScroll) {
+			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_not_interested_black_24px.svg';
+			$scope.toggleScrollFabStatus.tooltip = '禁止滚动';
+		} else {
+			$scope.toggleScrollFabStatus.icon = 'assets/icon/ic_format_line_spacing_black_24px.svg';
+			$scope.toggleScrollFabStatus.tooltip = '开启滚动';
+		}
+	}
 
 	function startGetMsg () {
 		if (currentRoom !== $scope.roomAddr) {
@@ -409,4 +519,87 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 		};
 		chatService.getRoomInfo(currentRoom, true);
 	}
+}	
+
+'use strict';
+
+angular
+	.module('app')
+	.controller('RollController', RollController);
+
+function RollController($scope, chatService, $interval, util, lodash) {
+
+	var hasCandidates = false;
+
+	angular.extend($scope, {
+		rollKey: "ShaneX真帅",
+		rollNum: 3,
+		rollFunc: rollFunc,
+		rollType: "keyWord",
+		giftType: "luck",
+		candidates: chatService.candidates,
+		rollBtnText: "开始",
+		lockInput: false,
+		enableScrollChat: enableScrollChat
+	});
+
+	function enableScrollChat () {
+		util.enableScroll = true;
+	}
+
+	function selectRandCandi () {
+		var uniArr = lodash.uniqBy($scope.candidates, 'userName');
+		if (uniArr.length<=$scope.rollNum) {
+			lodash.forEach($scope.candidates, function (o) {
+				o.getLucky = true;
+			});
+		} else {
+			var num=0;
+			while (num<$scope.rollNum) {
+				var randomIdx = Math.floor(Math.random()*$scope.candidates.length);
+				var idx = lodash.findIndex($scope.candidates, function(o) {
+	              return o.name === $scope.candidates[randomIdx].userName;
+	            });
+				if (idx===-1) {
+					$scope.candidates[randomIdx].getLucky = true;
+					num++;
+				}
+			}
+		}
+	}
+
+	function rollFunc () {
+		if (hasCandidates) {
+			// clean last time shit
+			chatService.candidates = [];
+			$scope.candidates = [];
+			$scope.lockInput = false;
+			hasCandidates = false;
+			$scope.rollBtnText = "开始";
+		} else {
+			if (!chatService.isStartRoll) {
+				// start roll
+				$scope.lockInput = true;
+				$scope.rollBtnText = "Roll!";
+				chatService.startRoll($scope.rollType, $scope.rollKey);
+			} else {
+				// stop roll
+				hasCandidates = true;
+				$scope.rollBtnText = "清空重Roll";
+				chatService.isStartRoll = false;
+
+				if ($scope.rollType==="gift"&&$scope.giftType==="amount") {
+					util.showMsg("赠送礼物前"+$scope.rollNum+"名已在榜!");
+				} else {
+					selectRandCandi();
+				}
+			}
+		}
+	}
+
+	$scope.$on('newCandidateArrive', function () {
+		$scope.candidates = chatService.candidates;
+        $scope.$apply();
+	});
+
 }	
