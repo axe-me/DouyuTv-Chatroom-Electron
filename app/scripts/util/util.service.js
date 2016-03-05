@@ -62,6 +62,7 @@
         item.str = item.userName + ' 进入直播间';
       } else if (rawData.indexOf('dgn') > -1 || rawData.indexOf('dgb') > -1) {         // gift
         item.type = 'gift';
+        console.log(rawData);
         if (rawData.indexOf('dgn') > -1) {
           item.userName = /\/src_ncnm@=(.+?)\//.exec(rawData)[1];
           item.hits = /\/hits@=(.+?)\//.exec(rawData)[1];
@@ -135,7 +136,7 @@
 
     function toBytes(content) {
       var length = [content.length + 9, 0x00, 0x00, 0x00];
-      var magic = [0xb1, 0x02, 0x00, 0x00];
+      var magic = [0xb1, 0x02, 0x00, 0x00];  //little ending hex number 689
       var ending = [0x00];
       var contentArr = [];
 

@@ -10,7 +10,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 
 	angular.extend($scope, {
 		isOpenDial: false,
-		roomAddr: "http://www.douyutv.com/shanex",
+		roomAddr: "http://www.douyutv.com/67554",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
@@ -22,13 +22,18 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 		},
 		openSearchBar: false,
 		disableScroll: disableScroll,
-		clearFilter: clearFilter
+		clearFilter: clearFilter,
+		getRoomStatusStr: getRoomStatusStr
 	});
 
 	$scope.$on('newMsgArrive', function () {
         $scope.$apply();
         if (util.enableScroll) { util.scrollChatRoom() };
 	});
+
+	function getRoomStatusStr () {
+		return chatService.roomInfo.isLive===1?["直播中","online"]:["未直播","offline"];
+	}
 
 	function clearFilter () {
 		$scope.openSearchBar = false;

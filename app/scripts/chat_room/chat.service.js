@@ -20,17 +20,15 @@
     var keepUpdateRoomInfo;
     var authServers;
     var danmuServer = {
-      ip: 'danmu.douyutv.com',
+      ip: 'openbarrage.douyutv.com',
       port: 8601
     }
-    var authClient;
     var danmuClient;
     var rollType;
     var rollKey;
 
     $rootScope.$on('abortCurrConn', function () {
         console.log('ending client...');
-        authClient.end();
         danmuClient.end();
     });
 
@@ -109,7 +107,6 @@
 
         res.on('end', function () {
           var roomObj = angular.fromJson(roomRegex.exec(html)[1]);
-          authServers=angular.fromJson(unescape(authServerRegex.exec(html)[1]));
 
           util.giftConfig=angular.fromJson(giftConfigRegex.exec(html)[1]);
 
@@ -125,7 +122,7 @@
 
           service.roomInfoStatus.isReady = true;
           
-          connAuthServ(authServers[0], service.roomInfo.roomID);
+          connDanmuServ(service.roomInfo.roomID);
 
           util.showMsg('获取房间信息成功!');
         });
@@ -134,89 +131,23 @@
       });
     }
 
-    function connAuthServ (serv, roomID) {
-      var authInfo = "";
-      var userRegex = /\/username@=(.+)\/nickname/;
-      var gidRegex = /\/gid@=(\d+)\//;
-      var username;
-      var gid;
-
-      util.showMsg("连接弹幕认证服务器中...");
-      authClient = net.connect({host:serv.ip, port:serv.port},
-        function() {
-          util.showMsg("弹幕服务器认证中...");
-          var time = Math.floor(Date.now() / 1000);
-          var magicString = '7oE9nPEG9xXV69phU31FYCLUagKeYtsF';
-          var devID = uuid.v4().replace(/-/g, '');
-          var vk = md5.createHash(time+magicString+devID);
-          var dataInit = "type@=loginreq/username@=/ct@=0/password@=/roomid@="+
-                      roomID+
-                      "/devid@="+devID+
-                      "/rt@="+Math.floor(Date.now() / 1000)+
-                      "/vk@="+vk+"/ver@=20150929/";
-          var dataTwo = "type@=qrl/rid@=" + roomID + "/";
-          var dataThr = "type@=keeplive/tick@=" + Math.floor(Date.now() / 1000) +
-                     "/vbw@=0/k@=19beba41da8ac2b4c7895a66cab81e23/"
-
-          authClient.write(util.toBytes(dataThr));
-          authClient.write(util.toBytes(dataInit));
-          authClient.write(util.toBytes(dataTwo));
-        });
-
-      authClient.on('data', function (data) {
-        authInfo+=data.toString();
-
-        if (!username)
-          username = userRegex.exec(authInfo);
-        if (!gid)
-          gid = gidRegex.exec(authInfo);
-        
-        if ((username!==null)&&(gid!== null)){
-          console.log('Got Auth Response');
-          authClient.end();
-        }
-      });
-
-      authClient.on('end', function () {
-        if (username&&gid){
-          connDanmuServ(roomID, gid[1], username[1]);
-          util.showMsg("弹幕服务器认证完成");
-          console.log('Auth server sucess');
-        } else {
-          console.log('Auth server fail');
-          util.showMsg("弹幕服务器认证失败");
-          util.showMsg("尝试重新弹幕服务器认证");
-          connAuthServ(serv, roomID);
-        }
-        console.log('Auth server Close');
-      });
-
-      authClient.on('error', function (error) {
-        console.log('auth fail'+ error.toString());
-        util.showMsg("弹幕服务器认证失败");
-        util.showMsg("尝试重新弹幕服务器认证");
-        connAuthServ(serv, roomID);
-      });
-    }
-
-    function connDanmuServ (roomID, gid, username) {
-      util.showMsg("连接弹幕服务器中...");
+    function connDanmuServ (roomID) {
+      util.showMsg("寻找弹幕服务器中...");
       danmuClient = net.connect({host:danmuServer.ip, port:danmuServer.port},
         function () {
-        util.showMsg("弹幕服务器连接成功");
-        var data = "type@=loginreq/username@="+username+
-                    "/password@=1234567890123456/roomid@=" + roomID + "/";
-        var dataTwo = "type@=joingroup/rid@=" + roomID + "/gid@="+gid+"/";
+        util.showMsg("弹幕服务器找到 开始连接");
 
-        danmuClient.write(util.toBytes(data));
-        danmuClient.write(util.toBytes(dataTwo));
-        console.log('Start recive data');
+        var loginServer = "type@=loginreq/roomid@="+roomID+"/";
+        var joinGroup = "type@=joingroup/rid@=" + roomID + "/gid@=-9999/";
+
+        danmuClient.write(util.toBytes(loginServer));
+        danmuClient.write(util.toBytes(joinGroup));
+        console.log('login request sent');
         service.chatStatus.hasStartFetchMsg = true; 
         //keep Alive!
         $interval(function () {
           danmuClient.write(util.toBytes("type@=keeplive/tick@=" + Math.floor(Date.now() / 1000) + "/"));
-        }, 20000);
-        setInterval
+        }, 45000);
       });
 
 
@@ -261,6 +192,8 @@
       danmuClient.on('error', function () {
         console.error('Error: Danmu server');
         util.showMsg("弹幕服务器连接错误");
+        connDanmuServ(roomID);
+        util.showMsg("重连弹幕服务器...");
       });
     }
 

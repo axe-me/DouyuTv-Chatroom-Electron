@@ -24,7 +24,7 @@
 		<div class="room-info-row"
 			 layout="row"
 			 layout-align="space-between center">
-			<div ng-class="roomInfo.isLive===1?'online':'offline'">{{roomInfo.isLive===1?"直播中":"未直播"}}</div>
+			<div ng-class="getRoomStatusStr()[1]">{{getRoomStatusStr()[0]}}</div>
 			<div ng-if="roomInfo.spectator">人气: {{roomInfo.spectator}}</div>
 		</div>
 	</div>
