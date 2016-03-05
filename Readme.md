@@ -8,6 +8,7 @@ This application is built with Angular JS and Github Electron.
 * 跨平台 Cross-platform, it's written using Github Electron.
 * 抽奖 Roll
 * 搜索弹幕 Searching
+* 弹幕语音 Text To Speak
  
 #Install
 --- 
