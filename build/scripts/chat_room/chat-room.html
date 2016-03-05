@@ -124,6 +124,15 @@
 	            </md-tooltip>
 	            <md-icon md-svg-src="{{ toggleScrollFabStatus.icon }}" ></md-icon>
 	          </md-button>
+	          <md-button
+	          	class="md-fab md-raised md-mini"
+	          	ng-click="toggleSpeak()">
+	            <md-tooltip md-autohide="true"
+	            	md-direction="left">
+	            	{{toggleSpeakFabStatus.tooltip}}
+	            </md-tooltip>
+	            <md-icon md-svg-src="{{ toggleSpeakFabStatus.icon }}" ></md-icon>
+	          </md-button>
 	      </md-fab-actions>
 	    </md-fab-speed-dial>
 	</div>

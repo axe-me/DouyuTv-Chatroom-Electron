@@ -44,7 +44,8 @@
       isStartRoll: false,
       candidates: [],
       startRoll: startRoll,
-      messages: []
+      messages: [],
+      isSpeak: false
     };
 
 
@@ -154,6 +155,12 @@
         var qItem = util.parseReadable(msg);
         service.messages.push(qItem);
         $rootScope.$broadcast('newMsgArrive');
+
+        if (service.isSpeak && qItem.type === 'msg') {
+          var msg = new SpeechSynthesisUtterance(qItem.content);
+          msg.lang = 'zh-CN';
+          window.speechSynthesis.speak(msg);
+        }
         
         if (service.isStartRoll) {
           if (rollType==='keyWord' && qItem.type === 'msg' && qItem.content.indexOf(rollKey)>-1) {
