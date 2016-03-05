@@ -9,7 +9,6 @@
 
   function chatService(
     util,
-    uuid,
     md5,
     lodash,
     $http,
@@ -18,7 +17,6 @@
   ) {
 
     var keepUpdateRoomInfo;
-    var authServers;
     var danmuServer = {
       ip: 'openbarrage.douyutv.com',
       port: 8601

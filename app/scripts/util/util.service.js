@@ -42,14 +42,14 @@
 
         if (nameRegexResult!==null) 
           item.userName = nameRegexResult[1];
-        else
+        else{
           item.userName = /\/nn@=(.+?)\//.exec(rawData)[1]; 
-
+        }
         if (contentRegexResult!==null) 
-          item.content = contentRegexResult[1];
-        else
-          item.content = /\/txt@=(.+?)\//.exec(rawData)[1];
-
+          item.content = contentRegexResult[1] || "[斗鱼服务器抽风发了不可识别数据]";
+        else {
+          item.content = /\/txt@=(.+?)\//.exec(rawData)[1] || "[斗鱼服务器抽风发了不可识别数据]";
+        }
         item.str = item.userName + ': ' + item.content;
       } else if (rawData.indexOf('userenter') > -1 || rawData.indexOf('uenter') > -1) {       //user enter
         item.type = 'userEnter';
@@ -62,7 +62,6 @@
         item.str = item.userName + ' 进入直播间';
       } else if (rawData.indexOf('dgn') > -1 || rawData.indexOf('dgb') > -1) {         // gift
         item.type = 'gift';
-        console.log(rawData);
         if (rawData.indexOf('dgn') > -1) {
           item.userName = /\/src_ncnm@=(.+?)\//.exec(rawData)[1];
           item.hits = /\/hits@=(.+?)\//.exec(rawData)[1];
