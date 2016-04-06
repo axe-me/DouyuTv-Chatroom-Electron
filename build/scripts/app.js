@@ -149,7 +149,7 @@
       var html;
       var roomRegex = /var\s\$ROOM\s=\s({.*})/;
       var authServerRegex = /server_config":"(.*)",/;
-      var giftConfigRegex =/var giftBatterConfig = (.*);/;
+      var giftConfigRegex =/ROOM.giftBatterConfig = (.*);/;
 
       util.showMsg("开始获取房间信息");
       http.get(roomAddr, function (res) {
@@ -425,7 +425,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 
 	angular.extend($scope, {
 		isOpenDial: false,
-		roomAddr: "http://www.douyutv.com/498456",
+		roomAddr: "http://www.douyu.com/chuan967",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
