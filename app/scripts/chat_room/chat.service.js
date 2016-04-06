@@ -94,7 +94,7 @@
       var html;
       var roomRegex = /var\s\$ROOM\s=\s({.*})/;
       var authServerRegex = /server_config":"(.*)",/;
-      var giftConfigRegex =/var giftBatterConfig = (.*);/;
+      var giftConfigRegex =/ROOM.giftBatterConfig = (.*);/;
 
       util.showMsg("开始获取房间信息");
       http.get(roomAddr, function (res) {

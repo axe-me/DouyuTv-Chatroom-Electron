@@ -10,7 +10,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 
 	angular.extend($scope, {
 		isOpenDial: false,
-		roomAddr: "http://www.douyutv.com/498456",
+		roomAddr: "http://www.douyu.com/chuan967",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
