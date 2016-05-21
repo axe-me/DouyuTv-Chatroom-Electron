@@ -9,7 +9,6 @@
 
   function chatService(
     util,
-    md5,
     lodash,
     $http,
     $interval,
@@ -24,6 +23,7 @@
     var danmuClient;
     var rollType;
     var rollKey;
+    var roomInfoApiRoot = 'http://open.douyucdn.cn/api/RoomApi/room/';
 
     $rootScope.$on('abortCurrConn', function () {
         console.log('ending client...');
@@ -74,45 +74,36 @@
     }
 
     function updateRoomInfo (roomID) {
-      var baseURL = "http://capi.douyucdn.cn/api/v1/room/" + roomID;
-      var urlMid = "?aid=android&client_sys=android&time=";
-      var time = Math.ceil(Date.now()/1000);
-      var auth = md5.createHash("room/"+roomID+urlMid+time+"1231");
-      var requestURL = baseURL + urlMid + time + "&auth=" + auth
 
-      $http.get(requestURL)
+      $http.get(roomInfoApiRoot+roomID)
         .then(function (response) {
           var rInfo = response.data.data;
           service.roomInfo.roomName = rInfo.room_name;
           service.roomInfo.spectator = rInfo.online;
+          service.roomInfo.isLive = parseInt(rInfo.room_status);
         }, function (err) {
           console.log(err);
         })
     }
 
     function getRoomInfo (roomAddr) {
-      var html;
-      var roomRegex = /var\s\$ROOM\s=\s({.*})/;
-      var authServerRegex = /server_config":"(.*)",/;
-      var giftConfigRegex =/ROOM.giftBatterConfig = (.*);/;
+      var roomID = roomAddr.split('/')[3];
 
       util.showMsg("开始获取房间信息");
-      http.get(roomAddr, function (res) {
-        var html = "";
-        util.showMsg("获取房间信息中...");
-        res.on("data", function(data) {
-          html += data;
-        });
 
-        res.on('end', function () {
-          var roomObj = angular.fromJson(roomRegex.exec(html)[1]);
+      $http.get(roomInfoApiRoot+roomID)
+        .then(function (response) {
+          var roomInfo = response.data.data;
+          console.log(roomInfo);
+          util.giftConfig=roomInfo.gift;
 
-          util.giftConfig=angular.fromJson(giftConfigRegex.exec(html)[1]);
+          service.roomInfo.anchor = roomInfo.owner_name;
+          service.roomInfo.roomName = roomInfo.room_name;
+          service.roomInfo.roomID = roomInfo.room_id;
+          service.roomInfo.spectator = roomInfo.online;
+          service.roomInfo.isLive = parseInt(roomInfo.room_status);  // live:1 offline:2
 
-          service.roomInfo.anchor = roomObj.owner_name;
-          service.roomInfo.roomName = roomObj.room_name;
-          service.roomInfo.roomID = roomObj.room_id;
-          service.roomInfo.isLive = roomObj.show_status;  // live:1 offline:2
+          console.log(service.roomInfo);
 
           //run one time here to get number of online 
           service.updateRoomInfo(service.roomInfo.roomID);
@@ -122,12 +113,10 @@
           service.roomInfoStatus.isReady = true;
           
           connDanmuServ(service.roomInfo.roomID);
-
           util.showMsg('获取房间信息成功!');
+        }, function (e) {
+          util.showMsg('获取房间信息失败!');
         });
-      }).on('error', function (e) {
-        util.showMsg('获取房间信息失败!');
-      });
     }
 
     function connDanmuServ (roomID) {

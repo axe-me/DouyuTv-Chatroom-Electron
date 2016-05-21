@@ -10,7 +10,7 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 
 	angular.extend($scope, {
 		isOpenDial: false,
-		roomAddr: "http://www.douyu.com/chuan967",
+		roomAddr: "http://www.douyu.com/276506",
 		startGetMsg: startGetMsg,
 		roomInfoStatus: chatService.roomInfoStatus,
 		roomInfo: chatService.roomInfo,
@@ -28,7 +28,8 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 		openSearchBar: false,
 		disableScroll: disableScroll,
 		clearFilter: clearFilter,
-		getRoomStatusStr: getRoomStatusStr
+		getRoomStatusStr: getRoomStatusStr,
+		getRoomStatusClass: getRoomStatusClass
 	});
 
 	$scope.$on('newMsgArrive', function () {
@@ -37,7 +38,10 @@ function ChatController($scope, $rootScope, chatService, $interval, util) {
 	});
 
 	function getRoomStatusStr () {
-		return chatService.roomInfo.isLive===1?["直播中","online"]:["未直播","offline"];
+		return chatService.roomInfo.isLive===1?"直播中":"未直播";
+	}
+	function getRoomStatusClass () {
+		return chatService.roomInfo.isLive===1?"online":"offline";
 	}
 
 	function clearFilter () {
