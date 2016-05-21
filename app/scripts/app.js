@@ -8,7 +8,6 @@
         'ui.router',
         'ngMaterial',
         'ngAnimate',
-        'angular-uuid',
         'angular-md5',
         'ngLodash'
     ])

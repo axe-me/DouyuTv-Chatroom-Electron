@@ -42,14 +42,14 @@
 
         if (nameRegexResult!==null) 
           item.userName = nameRegexResult[1];
-        else
+        else{
           item.userName = /\/nn@=(.+?)\//.exec(rawData)[1]; 
-
+        }
         if (contentRegexResult!==null) 
-          item.content = contentRegexResult[1];
-        else
-          item.content = /\/txt@=(.+?)\//.exec(rawData)[1];
-
+          item.content = contentRegexResult[1] || "[斗鱼服务器抽风发了不可识别数据]";
+        else {
+          item.content = /\/txt@=(.+?)\//.exec(rawData)[1] || "[斗鱼服务器抽风发了不可识别数据]";
+        }
         item.str = item.userName + ': ' + item.content;
       } else if (rawData.indexOf('userenter') > -1 || rawData.indexOf('uenter') > -1) {       //user enter
         item.type = 'userEnter';
@@ -135,7 +135,7 @@
 
     function toBytes(content) {
       var length = [content.length + 9, 0x00, 0x00, 0x00];
-      var magic = [0xb1, 0x02, 0x00, 0x00];
+      var magic = [0xb1, 0x02, 0x00, 0x00];  //little ending hex number 689
       var ending = [0x00];
       var contentArr = [];
 
